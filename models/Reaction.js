@@ -11,12 +11,10 @@ const reactionSchema = new Schema(
       required: true,
       minlength: 1,
       maxlength: 280,
-      default: 'Unnamed assignment',
     },
-    score: {
-      type: Number,
+    username: {
+      type: String,
       required: true,
-      default: () => Math.floor(Math.random() * (100 - 70 + 1) + 70),
     },
     createdAt: {
       type: Date,
@@ -25,6 +23,7 @@ const reactionSchema = new Schema(
   },
   {
     toJSON: {
+      virtuals: true,
       getters: true,
     },
     id: false,
