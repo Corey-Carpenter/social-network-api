@@ -28,10 +28,7 @@ module.exports = {
   },
   // Update a thought
   updateThought(req, res) {
-    Thought.findOneAndUpdate(
-      { _id: req.params.thoughtId },
-      { $addToSet: req.body },
-      { runValidators: true, new: true })
+    Thought.findOneAndUpdate({ _id: req.params.thoughtId }, { $addToSet: req.body }, { new: true })
       .then((thought) => res.json(thought))
       .catch((err) => res.status(500).json(err));
   },
@@ -51,26 +48,26 @@ module.exports = {
       { $addToSet: { reactions: newReaction } },
       { new: true }
     )
-    .then((thought) => res.json(thought))
-    .catch((err) => res.status(500).json(err));
+      .then((thought) => res.json(thought))
+      .catch((err) => res.status(500).json(err));
   },
 
   // Delete a reaction
-deleteReaction(req, res) {
-  const reactionIdToDelete = req.params.reactionId;
+  deleteReaction(req, res) {
+    const reactionIdToDelete = req.params.reactionId;
 
-  // Find the thought by its ID and remove the specific reaction
-  Thought.findByIdAndUpdate(
-    req.params.thoughtId,
-    { $pull: { reactions: { _id: reactionIdToDelete } } },
-    { new: true }
-  )
-    .then((thought) => {
-      if (!thought) {
-        return res.status(404).json({ message: 'Thought not found' });
-      }
-      res.json(thought);
-    })
-    .catch((err) => res.status(500).json(err));
-},
+    // Find the thought by its ID and remove the specific reaction
+    Thought.findByIdAndUpdate(
+      req.params.thoughtId,
+      { $pull: { reactions: { _id: reactionIdToDelete } } },
+      { new: true }
+    )
+      .then((thought) => {
+        if (!thought) {
+          return res.status(404).json({ message: 'Thought not found' });
+        }
+        res.json(thought);
+      })
+      .catch((err) => res.status(500).json(err));
+  },
 };
